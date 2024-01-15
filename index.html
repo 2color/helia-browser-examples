@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Helia browser examples</title>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body>
+    <div id="app" class="p-8">
+      <h1 class="text-2xl">Fetching JSON with Helia</h1>
+      <div class="my-2">
+        <button
+          class="btn btn-blue bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          id="button-fetch-json"
+        >
+          Fetch dag-json
+        </button>
+        <button
+          class="btn btn-blue bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          id="button-resolve-ipns"
+        >
+          Resolve IPNS name
+        </button>
+      </div>
+      <pre id="output"></pre>
+    </div>
+    <script type="module" src="src/index.ts"></script>
+  </body>
+</html>

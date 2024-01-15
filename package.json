@@ -1,0 +1,25 @@
+{
+  "name": "helia-browser-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "type": "module",
+  "dependencies": {
+    "@helia/delegated-routing-v1-http-api-client": "^2.0.1",
+    "@helia/ipns": "4.0.0",
+    "@helia/json": "^2.0.0",
+    "@helia/unixfs": "^2.0.1",
+    "@libp2p/peer-id": "4.0.3",
+    "helia": "^3.0.0",
+    "multiformats": "13.0.0"
+  },
+  "devDependencies": {
+    "typescript": "5.2.2",
+    "vite": "^5.0.11"
+  }
+}
