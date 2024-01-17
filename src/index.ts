@@ -1,37 +1,25 @@
 import './styles.css'
 import { CID } from 'multiformats'
-import { createHelia, Helia } from 'helia'
+import { createHeliaHTTP, Helia } from '@helia/http'
 import { json } from '@helia/json'
 import { trustlessGateway } from '@helia/block-brokers'
 // Three imports to resolve an IPNS name
 import { ipns as IPNS } from '@helia/ipns'
-// This 👇 is needed to resolve IPNS over Libp2p which is over delegated routing API
-import { libp2p } from '@helia/ipns/routing'
 // This 👇 is needed to be able to resolve IPNS names
 import { peerIdFromString } from '@libp2p/peer-id'
-import { createDelegatedRoutingV1HttpApiClient } from '@helia/delegated-routing-v1-http-api-client'
+import { delegatedHTTPRouting } from '@helia/routers'
 
 // dag-json
 const exampleCid = `baguqeeraxyfyo2lrqhusen7rlzke3e3iqrtpedqwxpjkp4i5thghhun2pfqa`
-const exampleIpns = `k51qzi5uqu5dhp48cti0590jyvwgxssrii0zdf19pyfsxwoqomqvfg6bg8qj3s`
+const exampleIpns = `k51qzi5uqu5di4qhp7oa8qcwmlt94dyd68it5dn60lmwbg4by0s24l3by9sene`
 
-let helia = await createHelia({
+let helia = await createHeliaHTTP({
   blockBrokers: [
     trustlessGateway({
       gateways: ['https://cloudflare-ipfs.com', 'https://ipfs.io'],
     }),
   ],
-  libp2p: {
-    // This 👇 is a no-op  since `createHelia` will start libp2p anyway
-    start: false,
-    // This 👇 is needed so that libp2p doesn't start opening connections to bootstrap and discovered nodes
-    connectionManager: {
-      minConnections: 0,
-    },
-    services: {
-      delegatedRouting: () => createDelegatedRoutingV1HttpApiClient('https://delegated-ipfs.dev'),
-    },
-  },
+  routers: [delegatedHTTPRouting('https://delegated-ipfs.dev')],
 })
 
 const getJson = async (helia: Helia, cid: string) => {
@@ -41,7 +29,7 @@ const getJson = async (helia: Helia, cid: string) => {
 
 const resolveIpns = async (helia: Helia, ipnsName: string) => {
   // If `ipns` is a constructor, why does it start lowercase?
-  const ipns = IPNS(helia, { routers: [libp2p(helia)] })
+  const ipns = IPNS(helia)
 
   const peerID = peerIdFromString(ipnsName)
 
@@ -50,6 +38,7 @@ const resolveIpns = async (helia: Helia, ipnsName: string) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const output = document.getElementById('output')
+  const ipnsInput = document.getElementById('ipns-name') as HTMLInputElement
   const fetchJsonButton = document.getElementById('button-fetch-json')
   const resolveIpnsButton = document.getElementById('button-resolve-ipns')
 
@@ -61,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   resolveIpnsButton?.addEventListener('click', async () => {
-    const cid = await resolveIpns(helia, exampleIpns)
+    const cid = await resolveIpns(helia, ipnsInput.value)
 
     if (!output) return
     output.innerHTML = `
-    ${exampleIpns} 
+    ${ipnsInput.value}
     points to 👇
     ${cid.toV1().toString()}
     `
