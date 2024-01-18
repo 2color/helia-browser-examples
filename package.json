@@ -11,17 +11,18 @@
   "type": "module",
   "dependencies": {
     "@helia/block-brokers": "^1.0.0-163df38",
-    "@helia/http": "^0.9.0-163df38",
-    "@helia/ipns": "^4.0.0-163df38",
-    "@helia/json": "^2.0.1-163df38",
-    "@helia/unixfs": "^2.0.1-163df38",
+    "@helia/http": "^0.9.0-db7d091",
+    "@helia/ipns": "^4.0.0-db7d091",
+    "@helia/json": "^2.0.1-db7d091",
+    "@helia/routers": "^0.0.0-db7d091",
+    "@helia/unixfs": "^2.0.1-db7d091",
     "@libp2p/peer-id": "4.0.3",
     "multiformats": "13.0.0"
   },
   "devDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "latest",
     "typescript": "5.2.2",
-    "vite": "^5.0.11",
-    "@rollup/rollup-linux-x64-gnu": "latest"
+    "vite": "^5.0.11"
   },
   "resolutions": {
     "rollup": "npm:@rollup/wasm-node"
